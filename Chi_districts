@@ -1,0 +1,30 @@
+#Step 1. Problem to solve - Determine safest districts to live in for 2020
+#Step 2. How to solve it with data - Use prior years district data to determine trend of crime and predict 2020 crime amount 
+#Step 3. Needed Data - district, year, fbi_code, primary
+#Step 4. Data Source - `bigquery-public-data.chicago_crime.crime`
+#Step 5. Is the data representative of the problem - Yes, it speaks to past crime trends in districts
+#Step 6. Data Wrangle - Organize data by year and districts then seem previous rise and fall per district and use that to determine 2020s numbers with a predictive ML model.
+#Step 7. How to visualize the data - Graph of crime trends Bar chart of final numbers 
+#Step 8. Does the model and approach answer the question - Model indeed gives me predictions of 2020 crime data for districts
+#Step 9. Can model be put into practice - YES
+#Step 10. Feedback - 
+CREATE OR REPLACE MODEL = applied.capstone_project
+model_type = linear_reg, label = [crime 2020];
+model_irriate !< 00.5
+
+WITH MODEL (
+1 AS TRAIN
+2 AS EVAL
+)
+predict AS
+(
+SELECT district, year, COUNT (district) AS crime_amount
+FROM `bigquery-public-data.chicago_crime.crime`
+WHERE 
+(year < 2020 AND district IS NOT NULL)
+GROUP BY district, year
+ORDER BY year, district DESC
+
+AS (ABS(FIND_FINGER(CAST(crime_amount AS STRING))), 100) .params.EVAL
+)
+SELECT (*) FROM predict
