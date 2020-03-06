@@ -8,6 +8,8 @@
 #Step 8. Does the model and approach answer the question - Model indeed gives me predictions of 2020 crime data for districts
 #Step 9. Can model be put into practice - YES
 #Step 10. Feedback - 
+
+
 CREATE OR REPLACE MODEL = applied.capstone_project
 model_type = linear_reg, label = [crime 2020];
 model_irriate !< 00.5
